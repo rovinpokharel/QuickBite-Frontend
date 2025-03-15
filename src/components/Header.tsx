@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import MobileNav from './MobileNav'
 
 export default function Header() {
   return (
@@ -11,6 +12,9 @@ export default function Header() {
              >
                 QuickBite
             </Link>
+            <div className='md:hidden'>
+                <MobileNav />
+            </div>
         </div>
     </div>
   )
