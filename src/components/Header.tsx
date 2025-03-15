@@ -9,7 +9,7 @@ export default function Header() {
         <div className='container mx-auto flex justify-between items-center'>
             <Link
              to='/'
-             className='text-3x1 font-bold tracking-tight text-orange-500'
+             className='text-3xl font-bold tracking-tight text-orange-500'
              >
                 QuickBite
             </Link>
