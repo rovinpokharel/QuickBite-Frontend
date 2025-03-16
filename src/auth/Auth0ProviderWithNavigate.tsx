@@ -1,3 +1,4 @@
+import { useCreateMyUser } from "@/api/MyUserApi";
 import { AppState, Auth0Provider, User } from "@auth0/auth0-react";
 // import { useNavigate } from "react-router-dom";
 
@@ -6,6 +7,7 @@ type Props = {
 };
 
 const Auth0ProviderWithNavigate = ({ children }: Props) => {
+  const {createUser} = useCreateMyUser();
 //   const navigate = useNavigate();
 
   const domain = import.meta.env.VITE_AUTH0_DOMAIN;
@@ -20,7 +22,9 @@ if (!domain || !clientId || !redirectUri) {
 
   const onRedirectCallback = (appState?: AppState, user?: User) => {
     // navigate(appState?.returnTo || "/auth-callback");
-    console.log("USER", user);
+    if(user?.sub && user?.email){
+      createUser({auth0Id: user.sub, email: user.email})
+    }
   };
 
   return (
