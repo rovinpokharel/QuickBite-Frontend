@@ -1,27 +1,25 @@
 // import React from 'react'
 
-import { useUpdateMyUser } from "@/api/MyUserApi";
+import { useGetMyUser, useUpdateMyUser } from "@/api/MyUserApi";
 import UserProfileForm from "@/forms/user-profile-form/UserProfileForm";
 
 export default function UserProfilePage() {
-    // const { currentUser, isLoading: isGetLoading } = useGetMyUser();
-//   const { updateUser, isLoading: isUpdateLoading } = useUpdateMyUser();
-  const { updateUser, isLoading } = useUpdateMyUser();
+  const { currentUser, isLoading: isGetLoading } = useGetMyUser();
+  const { updateUser, isLoading: isUpdateLoading } = useUpdateMyUser();
 
-//   if (isGetLoading) {
-//     return <span>Loading...</span>;
-//   }
+  if (isGetLoading) {
+    return <span>Loading...</span>;
+  }
 
-//   if (!currentUser) {
-//     return <span>Unable to load user profile</span>;
-//   }
+  if (!currentUser) {
+    return <span>Unable to load user profile</span>;
+  }
 
   return (
     <UserProfileForm
-    //   currentUser={currentUser}
+      currentUser={currentUser}
       onSave={updateUser}
-    //   isLoading={isUpdateLoading}
-      isLoading={isLoading}
+      isLoading={isUpdateLoading}
     />
   )
 }
