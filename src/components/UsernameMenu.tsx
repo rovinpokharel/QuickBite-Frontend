@@ -16,14 +16,14 @@ export default function UsernameMenu() {
                 {user?.email}
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                {/* <DropdownMenuItem>
+                <DropdownMenuItem>
                     <Link
                         to="/manage-restaurant"
                         className="font-bold hover:text-orange-500"
                     >
                         Manage Restaurant
                     </Link>
-                </DropdownMenuItem> */}
+                </DropdownMenuItem>
                 <DropdownMenuItem>
                     <Link to="/user-profile" className="font-bold hover:text-orange-500">
                         User Profile
