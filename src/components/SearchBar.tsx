@@ -5,7 +5,7 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-// import { useEffect } from "react";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   searchQuery: z.string({
@@ -19,22 +19,20 @@ type Props = {
   onSubmit: (formData: SearchForm) => void;
   placeHolder: string;
   onReset?: () => void;
-//   searchQuery?: string;
+  searchQuery?: string;
 };
 
-// const SearchBar = ({ onSubmit, onReset, placeHolder, searchQuery }: Props) => {
-const SearchBar = ({ onSubmit, onReset, placeHolder }: Props) => {
+const SearchBar = ({ onSubmit, onReset, placeHolder, searchQuery }: Props) => {
   const form = useForm<SearchForm>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      searchQuery: "",
-//       searchQuery,
+      searchQuery,
     },
   });
 
-//   useEffect(() => {
-//     form.reset({ searchQuery });
-//   }, [form, searchQuery]);
+  useEffect(() => {
+    form.reset({ searchQuery });
+  }, [form, searchQuery]);
 
   const handleReset = () => {
     form.reset({
@@ -90,5 +88,5 @@ const SearchBar = ({ onSubmit, onReset, placeHolder }: Props) => {
     </Form>
   );
 };
-//9:23
+
 export default SearchBar;
