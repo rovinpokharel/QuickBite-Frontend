@@ -48,6 +48,7 @@ import { useParams } from "react-router-dom";
 import { MenuItem as MenuItemType } from "../types";
 // import CheckoutButton from "@/components/CheckoutButton";
 import { UserFormData } from "@/forms/user-profile-form/UserProfileForm";
+import CheckoutButton from "@/components/CheckoutButton";
 // import { useCreateCheckoutSession } from "@/api/OrderApi";
 
 export type CartItem = {
@@ -175,11 +176,11 @@ const DetailPage = () => {
               removeFromCart={removeFromCart}
             />
             <CardFooter>
-              {/* <CheckoutButton
-                disabled={cartItems.length === 0}
-                onCheckout={onCheckout}
-                isLoading={isCheckoutLoading}
-              /> */}
+              <CheckoutButton
+                // disabled={cartItems.length === 0}
+                // onCheckout={onCheckout}
+                // isLoading={isCheckoutLoading}
+              />
             </CardFooter>
           </Card>
         </div>
