@@ -11,14 +11,14 @@ import { useGetMyUser } from "@/api/MyUserApi";
 type Props = {
   onCheckout: (userFormData: UserFormData) => void;
   disabled: boolean;
-//   isLoading: boolean;
+  //   isLoading: boolean;
 };
 
 export default function CheckoutButton({
   onCheckout,
   disabled,
-//   isLoading,
-}: Props) {
+}: //   isLoading,
+Props) {
   const {
     isAuthenticated,
     isLoading: isAuthLoading,
@@ -62,8 +62,8 @@ export default function CheckoutButton({
           currentUser={currentUser}
           onSave={onCheckout}
           isLoading={isGetUserLoading}
-          //   title="Confirm Deliery Details"
-          //   buttonText="Continue to payment"
+          title="Confirm Deliery Details"
+          buttonText="Continue to payment"
         />
       </DialogContent>
     </Dialog>
