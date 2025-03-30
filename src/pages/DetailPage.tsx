@@ -120,25 +120,26 @@ const DetailPage = () => {
   };
 
   const onCheckout = async (userFormData: UserFormData) => {
-    if (!restaurant) {
-      return;
-    }
+    console.log("userFormData", userFormData);
+    // if (!restaurant) {
+    //   return;
+    // }
 
-    const checkoutData = {
-      cartItems: cartItems.map((cartItem) => ({
-        menuItemId: cartItem._id,
-        name: cartItem.name,
-        quantity: cartItem.quantity.toString(),
-      })),
-      restaurantId: restaurant._id,
-      deliveryDetails: {
-        name: userFormData.name,
-        addressLine1: userFormData.addressLine1,
-        city: userFormData.city,
-        country: userFormData.country,
-        email: userFormData.email as string,
-      },
-    };
+    // const checkoutData = {
+    //   cartItems: cartItems.map((cartItem) => ({
+    //     menuItemId: cartItem._id,
+    //     name: cartItem.name,
+    //     quantity: cartItem.quantity.toString(),
+    //   })),
+    //   restaurantId: restaurant._id,
+    //   deliveryDetails: {
+    //     name: userFormData.name,
+    //     addressLine1: userFormData.addressLine1,
+    //     city: userFormData.city,
+    //     country: userFormData.country,
+    //     email: userFormData.email as string,
+    //   },
+    // };
 
     // const data = await createCheckoutSession(checkoutData);
     // window.location.href = data.url;
@@ -177,8 +178,8 @@ const DetailPage = () => {
             />
             <CardFooter>
               <CheckoutButton
-                // disabled={cartItems.length === 0}
-                // onCheckout={onCheckout}
+                disabled={cartItems.length === 0}
+                onCheckout={onCheckout}
                 // isLoading={isCheckoutLoading}
               />
             </CardFooter>
