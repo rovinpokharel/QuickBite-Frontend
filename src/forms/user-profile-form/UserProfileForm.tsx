@@ -54,11 +54,11 @@ const UserProfileForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSave)}
-        className="space-y-4 bg-gray-50 rounded-lg md:p-10"
+        className="space-y-4 bg-gray-50 dark:bg-gray-900 rounded-lg md:p-10"
       >
         <div>
-          <h2 className="text-2xl font-bold">{title}</h2>
-          <FormDescription>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{title}</h2>
+          <FormDescription className="text-gray-600 dark:text-gray-400">
             View and change your profile information here
           </FormDescription>
         </div>
@@ -67,9 +67,9 @@ const UserProfileForm = ({
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel className="text-gray-900 dark:text-white">Email</FormLabel>
               <FormControl>
-                <Input {...field} disabled className="bg-white" />
+                <Input {...field} disabled className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
               </FormControl>
             </FormItem>
           )}
@@ -80,11 +80,11 @@ const UserProfileForm = ({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel className="text-gray-900 dark:text-white">Name</FormLabel>
               <FormControl>
-                <Input {...field} className="bg-white" />
+                <Input {...field} className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-red-500 dark:text-red-400" />
             </FormItem>
           )}
         />
@@ -95,11 +95,11 @@ const UserProfileForm = ({
             name="addressLine1"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Address Line 1</FormLabel>
+                <FormLabel className="text-gray-900 dark:text-white">Address Line 1</FormLabel>
                 <FormControl>
-                  <Input {...field} className="bg-white" />
+                  <Input {...field} className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500 dark:text-red-400" />
               </FormItem>
             )}
           />
@@ -108,11 +108,11 @@ const UserProfileForm = ({
             name="city"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>City</FormLabel>
+                <FormLabel className="text-gray-900 dark:text-white">City</FormLabel>
                 <FormControl>
-                  <Input {...field} className="bg-white" />
+                  <Input {...field} className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500 dark:text-red-400" />
               </FormItem>
             )}
           />
@@ -121,11 +121,11 @@ const UserProfileForm = ({
             name="country"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Country</FormLabel>
+                <FormLabel className="text-gray-900 dark:text-white">Country</FormLabel>
                 <FormControl>
-                  <Input {...field} className="bg-white" />
+                  <Input {...field} className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500 dark:text-red-400" />
               </FormItem>
             )}
           />
@@ -133,7 +133,7 @@ const UserProfileForm = ({
         {isLoading ? (
           <LoadingButton />
         ) : (
-          <Button type="submit" className="bg-orange-500">
+          <Button type="submit" className="bg-orange-500 hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-700">
             {buttonText}
           </Button>
         )}

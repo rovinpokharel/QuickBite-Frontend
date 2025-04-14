@@ -12,7 +12,7 @@ const CuisineCheckbox = ({ cuisine, field }: Props) => {
     <FormItem className="flex flex-row items-center space-x-1 space-y-0 mt-2">
       <FormControl>
         <Checkbox
-          className="bg-white"
+          className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 data-[state=checked]:bg-orange-500 dark:data-[state=checked]:bg-orange-600 data-[state=checked]:border-orange-500 dark:data-[state=checked]:border-orange-600"
           checked={field.value.includes(cuisine)}
           onCheckedChange={(checked) => {
             if (checked) {
@@ -25,7 +25,7 @@ const CuisineCheckbox = ({ cuisine, field }: Props) => {
           }}
         />
       </FormControl>
-      <FormLabel className="text-sm font-normal">{cuisine}</FormLabel>
+      <FormLabel className="text-sm font-normal text-gray-900 dark:text-white cursor-pointer">{cuisine}</FormLabel>
     </FormItem>
   );
 };

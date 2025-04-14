@@ -14,15 +14,15 @@ const OrderStatusDetail = ({ order }: Props) => {
   return (
     <div className="space-y-5">
       <div className="flex flex-col">
-        <span className="font-bold">Delivering to:</span>
-        <span>{order.deliveryDetails.name}</span>
-        <span>
+        <span className="font-bold text-gray-900 dark:text-white">Delivering to:</span>
+        <span className="text-gray-700 dark:text-gray-300">{order.deliveryDetails.name}</span>
+        <span className="text-gray-700 dark:text-gray-300">
           {order.deliveryDetails.addressLine1}, {order.deliveryDetails.city}
         </span>
       </div>
       <div className="flex flex-col">
-        <span className="font-bold">Your Order</span>
-        <ul>
+        <span className="font-bold text-gray-900 dark:text-white">Your Order</span>
+        <ul className="text-gray-700 dark:text-gray-300">
           {order.cartItems.map((item, index) => (
             <li key={index}>
               {item.name} x {item.quantity}
@@ -30,10 +30,10 @@ const OrderStatusDetail = ({ order }: Props) => {
           ))}
         </ul>
       </div>
-      <Separator />
+      <Separator className="bg-gray-200 dark:bg-gray-700" />
       <div className="flex flex-col">
-        <span className="font-bold">Total</span>
-        <span>{formatPrice(order.totalAmount)}</span>
+        <span className="font-bold text-gray-900 dark:text-white">Total</span>
+        <span className="text-gray-700 dark:text-gray-300">{formatPrice(order.totalAmount)}</span>
       </div>
     </div>
   );
