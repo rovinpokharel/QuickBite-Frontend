@@ -6,6 +6,11 @@ type Props = {
 };
 
 const OrderStatusDetail = ({ order }: Props) => {
+  const formatPrice = (amount: number | undefined) => {
+    if (amount === undefined) return "Calculating...";
+    return `रु ${amount.toFixed(2)}`;
+  };
+
   return (
     <div className="space-y-5">
       <div className="flex flex-col">
@@ -18,8 +23,8 @@ const OrderStatusDetail = ({ order }: Props) => {
       <div className="flex flex-col">
         <span className="font-bold">Your Order</span>
         <ul>
-          {order.cartItems.map((item) => (
-            <li>
+          {order.cartItems.map((item, index) => (
+            <li key={index}>
               {item.name} x {item.quantity}
             </li>
           ))}
@@ -28,8 +33,7 @@ const OrderStatusDetail = ({ order }: Props) => {
       <Separator />
       <div className="flex flex-col">
         <span className="font-bold">Total</span>
-        {/* <span>रु{(order.totalAmount / 100).toFixed(2)}</span> */}
-        <span>रु{(order.totalAmount).toFixed(2)}</span>
+        <span>{formatPrice(order.totalAmount)}</span>
       </div>
     </div>
   );
