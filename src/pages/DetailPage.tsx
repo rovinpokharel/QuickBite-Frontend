@@ -79,6 +79,21 @@ const DetailPage = () => {
     });
   };
 
+  const updateCartItemQuantity = (cartItem: CartItem, newQuantity: number) => {
+    setCartItems((prevCartItems) => {
+      const updatedCartItems = prevCartItems.map((item) =>
+        item._id === cartItem._id ? { ...item, quantity: newQuantity } : item
+      );
+
+      sessionStorage.setItem(
+        `cartItems-${restaurantId}`,
+        JSON.stringify(updatedCartItems)
+      );
+
+      return updatedCartItems;
+    });
+  };
+
   const onCheckout = async (userFormData: UserFormData) => {
     if (!restaurant) {
       return;
@@ -134,6 +149,7 @@ const DetailPage = () => {
               restaurant={restaurant}
               cartItems={cartItems}
               removeFromCart={removeFromCart}
+              updateCartItemQuantity={updateCartItemQuantity}
             />
             <CardFooter>
               <CheckoutButton
