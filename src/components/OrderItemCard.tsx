@@ -45,41 +45,45 @@ const OrderItemCard = ({ order }: Props) => {
     return `${hours}:${paddedMinutes}`;
   };
 
+  const formatPrice = (amount: number | undefined) => {
+    if (amount === undefined) return "रु 0.00";
+    return `रु ${amount.toFixed(2)}`;
+  };
+
   return (
-    <Card>
+    <Card className="bg-white dark:bg-gray-800">
       <CardHeader>
         <CardTitle className="grid md:grid-cols-4 gap-4 justify-between mb-3">
-          <div>
+          <div className="text-gray-900 dark:text-white">
             Customer Name:
-            <span className="ml-2 font-normal">
+            <span className="ml-2 font-normal text-gray-700 dark:text-gray-300">
               {order.deliveryDetails.name}
             </span>
           </div>
-          <div>
+          <div className="text-gray-900 dark:text-white">
             Delivery address:
-            <span className="ml-2 font-normal">
+            <span className="ml-2 font-normal text-gray-700 dark:text-gray-300">
               {order.deliveryDetails.addressLine1}, {order.deliveryDetails.city}
             </span>
           </div>
-          <div>
+          <div className="text-gray-900 dark:text-white">
             Time:
-            <span className="ml-2 font-normal">{getTime()}</span>
+            <span className="ml-2 font-normal text-gray-700 dark:text-gray-300">{getTime()}</span>
           </div>
-          <div>
+          <div className="text-gray-900 dark:text-white">
             Total Cost:
-            <span className="ml-2 font-normal">
-              {/* रु{(order.totalAmount / 100).toFixed(2)} */}
-              रु {order.totalAmount.toFixed(2)}
+            <span className="ml-2 font-normal text-gray-700 dark:text-gray-300">
+              {formatPrice(order.totalAmount)}
             </span>
           </div>
         </CardTitle>
-        <Separator />
+        <Separator className="bg-gray-200 dark:bg-gray-700" />
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           {order.cartItems.map((cartItem) => (
-            <span>
-              <Badge variant="outline" className="mr-2">
+            <span className="text-gray-900 dark:text-white">
+              <Badge variant="outline" className="mr-2 border-gray-300 dark:border-gray-600">
                 {cartItem.quantity}
               </Badge>
               {cartItem.name}
@@ -87,18 +91,24 @@ const OrderItemCard = ({ order }: Props) => {
           ))}
         </div>
         <div className="flex flex-col space-y-1.5">
-          <Label htmlFor="status">What is the status of this order?</Label>
+          <Label htmlFor="status" className="text-gray-900 dark:text-white">What is the status of this order?</Label>
           <Select
             value={status}
             disabled={isLoading}
             onValueChange={(value) => handleStatusChange(value as OrderStatus)}
           >
-            <SelectTrigger id="status">
+            <SelectTrigger id="status" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
-            <SelectContent position="popper">
+            <SelectContent position="popper" className="bg-white dark:bg-gray-800">
               {ORDER_STATUS.map((status) => (
-                <SelectItem value={status.value}>{status.label}</SelectItem>
+                <SelectItem 
+                  key={status.value} 
+                  value={status.value}
+                  className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  {status.label}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>

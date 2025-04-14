@@ -13,8 +13,8 @@ export default function MenuSection() {
     return (
         <div className="space-y-2">
             <div>
-                <h2 className="text-2xl font-bold">Menu</h2>
-                <FormDescription>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Menu</h2>
+                <FormDescription className="text-gray-600 dark:text-gray-400">
                     Create your menu and give each item a name and a price
                 </FormDescription>
             </div>
@@ -25,6 +25,7 @@ export default function MenuSection() {
                     <FormItem className="flex flex-col gap-2">
                         {fields.map((_, index) => (
                             <MenuItemInput
+                                key={_.id}
                                 index={index}
                                 removeMenuItem={() => remove(index)}
                             />
@@ -32,7 +33,11 @@ export default function MenuSection() {
                     </FormItem>
                 )}
             />
-            <Button type="button" onClick={() => append({ name: "", price: "" })}>
+            <Button 
+                type="button" 
+                onClick={() => append({ name: "", price: "" })}
+                className="bg-orange-500 hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-700"
+            >
                 Add Menu Item
             </Button>
         </div>

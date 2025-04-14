@@ -9,8 +9,8 @@ export default function ImageSection() {
     return (
         <div className="space-y-2">
             <div>
-                <h2 className="text-2xl font-bold">Image</h2>
-                <FormDescription>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Image</h2>
+                <FormDescription className="text-gray-600 dark:text-gray-400">
                     Add an image that will be displayed on your restaurant listing in the
                     search results. Adding a new image will overwrite the existing one.
                 </FormDescription>
@@ -32,7 +32,7 @@ export default function ImageSection() {
                         <FormItem>
                             <FormControl>
                                 <Input
-                                    className="bg-white"
+                                    className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 file:text-gray-900 dark:file:text-white file:bg-gray-100 dark:file:bg-gray-700"
                                     type="file"
                                     accept=".jpg, .jpeg, .png"
                                     onChange={(event) =>
@@ -42,7 +42,7 @@ export default function ImageSection() {
                                     }
                                 />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="text-red-500 dark:text-red-400" />
                         </FormItem>
                     )}
                 />
