@@ -8,8 +8,14 @@ import ManageRestaurantPage from "./pages/ManageRestaurantPage";
 import SearchPage from "./pages/SearchPage";
 import DetailPage from "./pages/DetailPage";
 import OrderStatusPage from "./pages/OrderStatusPage";
+import { useGetMyUser } from "./api/MyUserApi";
+import AdminOrdersPage from "./pages/AdminOrdersPage";
+import AdminRestaurantsPage from "./pages/AdminRestaurantsPage";
+import AdminEditRestaurantPage from "./pages/AdminEditRestaurantPage";
 
 const AppRoutes = () => {
+  const { currentUser } = useGetMyUser();
+
   return (
     <Routes>
       <Route
@@ -54,14 +60,42 @@ const AppRoutes = () => {
             </Layout>
           }
         />
-        <Route
-          path="/manage-restaurant"
-          element={
-            <Layout>
-              <ManageRestaurantPage />
-            </Layout>
-          }
-        />
+        {currentUser?.admin && (
+          <>
+            <Route
+              path="/admin/orders"
+              element={
+                <Layout>
+                  <AdminOrdersPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/admin/restaurants"
+              element={
+                <Layout>
+                  <AdminRestaurantsPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/admin/restaurants/:restaurantId/edit"
+              element={
+                <Layout>
+                  <AdminEditRestaurantPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/manage-restaurant"
+              element={
+                <Layout>
+                  <ManageRestaurantPage />
+                </Layout>
+              }
+            />
+          </>
+        )}
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />

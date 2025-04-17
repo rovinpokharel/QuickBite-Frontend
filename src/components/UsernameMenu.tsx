@@ -6,9 +6,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
+import { useGetMyUser } from "@/api/MyUserApi";
 
 export default function UsernameMenu() {
     const { user, logout } = useAuth0();
+    const { currentUser } = useGetMyUser();
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center px-3 font-bold hover:text-orange-500 gap-2">
@@ -16,14 +19,35 @@ export default function UsernameMenu() {
                 {user?.email}
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem>
-                    <Link
-                        to="/manage-restaurant"
-                        className="font-bold hover:text-orange-500"
-                    >
-                        Manage Restaurant
-                    </Link>
-                </DropdownMenuItem>
+                {currentUser?.admin && (
+                    <>
+                        <DropdownMenuItem>
+                            <Link
+                                to="/admin/orders"
+                                className="font-bold hover:text-orange-500"
+                            >
+                                All Orders
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link
+                                to="/admin/restaurants"
+                                className="font-bold hover:text-orange-500"
+                            >
+                                All Restaurants
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link
+                                to="/manage-restaurant"
+                                className="font-bold hover:text-orange-500"
+                            >
+                                Manage Restaurant
+                            </Link>
+                        </DropdownMenuItem>
+                        <Separator />
+                    </>
+                )}
                 <DropdownMenuItem>
                     <Link to="/user-profile" className="font-bold hover:text-orange-500">
                         User Profile

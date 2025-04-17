@@ -1,37 +1,34 @@
-import { Order, OrderStatus } from "@/types";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Separator } from "./ui/separator";
-import { Badge } from "./ui/badge";
-import { Label } from "./ui/label";
+import { Order } from "@/types";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { ORDER_STATUS } from "@/config/order-status-config";
+} from "@/components/ui/select";
 import { useUpdateMyRestaurantOrder } from "@/api/MyRestaurantApi";
-import { useEffect, useState } from "react";
+import { useUpdateOrderStatus as useUpdateOrderStatusAdmin } from "@/api/AdminApi";
+import { useGetMyUser } from "@/api/MyUserApi";
 
 type Props = {
   order: Order;
 };
 
 const OrderItemCard = ({ order }: Props) => {
-  const { updateRestaurantStatus, isLoading } = useUpdateMyRestaurantOrder();
-  const [status, setStatus] = useState<OrderStatus>(order.status);
+  const { currentUser } = useGetMyUser();
+  const { updateRestaurantStatus, isLoading: isUpdateLoading } = useUpdateMyRestaurantOrder();
+  const { updateOrderStatus: updateOrderStatusAdmin, isLoading: isUpdateLoadingAdmin } = useUpdateOrderStatusAdmin();
 
-  useEffect(() => {
-    setStatus(order.status);
-  }, [order.status]);
-
-  const handleStatusChange = async (newStatus: OrderStatus) => {
-    await updateRestaurantStatus({
-      orderId: order._id as string,
-      status: newStatus,
-    });
-    setStatus(newStatus);
+  const handleStatusChange = async (newStatus: string) => {
+    if (currentUser?.admin) {
+      await updateOrderStatusAdmin({ orderId: order._id, status: newStatus });
+    } else {
+      await updateRestaurantStatus({ orderId: order._id, status: newStatus });
+    }
   };
 
   const getTime = () => {
@@ -93,23 +90,19 @@ const OrderItemCard = ({ order }: Props) => {
         <div className="flex flex-col space-y-1.5">
           <Label htmlFor="status" className="text-gray-900 dark:text-white">What is the status of this order?</Label>
           <Select
-            value={status}
-            disabled={isLoading}
-            onValueChange={(value) => handleStatusChange(value as OrderStatus)}
+            value={order.status}
+            disabled={isUpdateLoading || isUpdateLoadingAdmin}
+            onValueChange={(value) => handleStatusChange(value)}
           >
-            <SelectTrigger id="status" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600">
+            <SelectTrigger id="status" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-600">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
-            <SelectContent position="popper" className="bg-white dark:bg-gray-800">
-              {ORDER_STATUS.map((status) => (
-                <SelectItem 
-                  key={status.value} 
-                  value={status.value}
-                  className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  {status.label}
-                </SelectItem>
-              ))}
+            <SelectContent position="popper" className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600">
+              <SelectItem value="placed" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Placed</SelectItem>
+              <SelectItem value="paid" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Paid</SelectItem>
+              <SelectItem value="inProgress" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">In Progress</SelectItem>
+              <SelectItem value="outForDelivery" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Out For Delivery</SelectItem>
+              <SelectItem value="delivered" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">Delivered</SelectItem>
             </SelectContent>
           </Select>
         </div>
