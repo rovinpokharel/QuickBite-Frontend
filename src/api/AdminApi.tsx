@@ -152,8 +152,8 @@ export const useCreateRestaurant = () => {
   const {
     mutateAsync: createRestaurant,
     isLoading,
-    isSuccess,
-    error,
+    // isSuccess,
+    // error,
   } = useMutation(createRestaurantRequest, {
     onSuccess: () => {
       queryClient.invalidateQueries("fetchAllRestaurants");
@@ -197,8 +197,8 @@ export const useUpdateRestaurant = () => {
   const {
     mutateAsync: updateRestaurant,
     isLoading,
-    isSuccess,
-    error,
+    // isSuccess,
+    // error,
   } = useMutation(updateRestaurantRequest, {
     onSuccess: () => {
       queryClient.invalidateQueries("fetchAllRestaurants");
