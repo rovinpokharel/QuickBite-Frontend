@@ -9,8 +9,12 @@ import { Button } from "./ui/button";
 import { useGetMyUser } from "@/api/MyUserApi";
 
 export default function UsernameMenu() {
-    const { user, logout } = useAuth0();
+    const { user, logout, isAuthenticated } = useAuth0();
     const { currentUser } = useGetMyUser();
+
+    if (!isAuthenticated) {
+        return null;
+    }
 
     return (
         <DropdownMenu>

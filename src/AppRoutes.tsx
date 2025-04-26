@@ -12,8 +12,10 @@ import { useGetMyUser } from "./api/MyUserApi";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 import AdminRestaurantsPage from "./pages/AdminRestaurantsPage";
 import AdminEditRestaurantPage from "./pages/AdminEditRestaurantPage";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const AppRoutes = () => {
+  const { isAuthenticated } = useAuth0();
   const { currentUser } = useGetMyUser();
 
   return (
@@ -60,7 +62,7 @@ const AppRoutes = () => {
             </Layout>
           }
         />
-        {currentUser?.admin && (
+        {isAuthenticated && currentUser?.admin && (
           <>
             <Route
               path="/admin/orders"
