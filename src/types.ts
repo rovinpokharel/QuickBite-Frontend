@@ -6,6 +6,7 @@ export type User = {
   city: string;
   country: string;
   admin: boolean;
+  restaurantAdmin: boolean;
 };
 
 export type MenuItem = {

@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useUpdateMyRestaurantOrder } from "@/api/MyRestaurantApi";
+import { useUpdateMyRestaurantOrderStatus } from "@/api/MyRestaurantApi";
 import { useUpdateOrderStatus as useUpdateOrderStatusAdmin } from "@/api/AdminApi";
 import { useGetMyUser } from "@/api/MyUserApi";
 
@@ -20,14 +20,14 @@ type Props = {
 
 const OrderItemCard = ({ order }: Props) => {
   const { currentUser } = useGetMyUser();
-  const { updateRestaurantStatus, isLoading: isUpdateLoading } = useUpdateMyRestaurantOrder();
+  const { updateOrderStatus, isLoading: isUpdateLoading } = useUpdateMyRestaurantOrderStatus();
   const { updateOrderStatus: updateOrderStatusAdmin, isLoading: isUpdateLoadingAdmin } = useUpdateOrderStatusAdmin();
 
   const handleStatusChange = async (newStatus: string) => {
     if (currentUser?.admin) {
       await updateOrderStatusAdmin({ orderId: order._id, status: newStatus });
     } else {
-      await updateRestaurantStatus({ orderId: order._id, status: newStatus });
+      await updateOrderStatus({ orderId: order._id, status: newStatus });
     }
   };
 

@@ -12,6 +12,7 @@ import { useGetMyUser } from "./api/MyUserApi";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 import AdminRestaurantsPage from "./pages/AdminRestaurantsPage";
 import AdminEditRestaurantPage from "./pages/AdminEditRestaurantPage";
+import RestaurantOrdersPage from "./pages/RestaurantOrdersPage";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const AppRoutes = () => {
@@ -62,6 +63,28 @@ const AppRoutes = () => {
             </Layout>
           }
         />
+        {/* Restaurant Admin Routes */}
+        {isAuthenticated && currentUser?.restaurantAdmin && (
+          <>
+            <Route
+              path="/restaurant/orders"
+              element={
+                <Layout>
+                  <RestaurantOrdersPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/manage-restaurant"
+              element={
+                <Layout>
+                  <ManageRestaurantPage />
+                </Layout>
+              }
+            />
+          </>
+        )}
+        {/* Admin Only Routes */}
         {isAuthenticated && currentUser?.admin && (
           <>
             <Route
@@ -85,14 +108,6 @@ const AppRoutes = () => {
               element={
                 <Layout>
                   <AdminEditRestaurantPage />
-                </Layout>
-              }
-            />
-            <Route
-              path="/manage-restaurant"
-              element={
-                <Layout>
-                  <ManageRestaurantPage />
                 </Layout>
               }
             />

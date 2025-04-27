@@ -41,16 +41,31 @@ export default function UsernameMenu() {
                                 All Restaurants
                             </Link>
                         </DropdownMenuItem>
+                        <Separator />
+                    </>
+                )}
+                {currentUser?.restaurantAdmin && (
+                    <>
                         <DropdownMenuItem>
                             <Link
-                                to="/manage-restaurant"
+                                to="/restaurant/orders"
                                 className="font-bold hover:text-orange-500"
                             >
-                                Manage Restaurant
+                                Manage Orders
                             </Link>
                         </DropdownMenuItem>
                         <Separator />
                     </>
+                )}
+                {(currentUser?.admin || currentUser?.restaurantAdmin) && (
+                    <DropdownMenuItem>
+                        <Link
+                            to="/manage-restaurant"
+                            className="font-bold hover:text-orange-500"
+                        >
+                            Manage Restaurant
+                        </Link>
+                    </DropdownMenuItem>
                 )}
                 <DropdownMenuItem>
                     <Link to="/user-profile" className="font-bold hover:text-orange-500">
