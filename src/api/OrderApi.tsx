@@ -5,30 +5,46 @@ import { toast } from "sonner";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const useGetMyOrders = () => {
+export const useGetMyOrders = (options = {}) => {
   const { getAccessTokenSilently } = useAuth0();
 
   const getMyOrdersRequest = async (): Promise<Order[]> => {
-    const accessToken = await getAccessTokenSilently();
+    try {
+      const accessToken = await getAccessTokenSilently();
 
-    const response = await fetch(`${API_BASE_URL}/api/order`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+      const response = await fetch(`${API_BASE_URL}/api/order`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to get orders");
+      if (!response.ok) {
+        throw new Error("Failed to get orders");
+      }
+
+      return response.json();
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      throw error;
     }
-
-    return response.json();
   };
 
-  const { data: orders, isLoading } = useQuery(
+  const { data: orders, isLoading, error } = useQuery(
     "fetchMyOrders",
     getMyOrdersRequest,
     {
-      refetchInterval: 5000,
+      refetchInterval: 5000, // Refetch every 5 seconds
+      refetchOnWindowFocus: false, // Don't refetch when window regains focus
+      retry: 3, // Retry 3 times on failure
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
+      staleTime: 10000, // Consider data stale after 10 seconds
+      onError: (error: Error) => {
+        // Only show error toast for initial fetch or if we have no data
+        if (!orders) {
+          toast.error("Unable to load orders. Please check your connection and try again.");
+        }
+      },
+      ...options,
     }
   );
 
@@ -56,25 +72,30 @@ export const useCreateCheckoutSession = () => {
   const createCheckoutSessionRequest = async (
     checkoutSessionRequest: CheckoutSessionRequest
   ) => {
-    const accessToken = await getAccessTokenSilently();
+    try {
+      const accessToken = await getAccessTokenSilently();
 
-    const response = await fetch(
-      `${API_BASE_URL}/api/order/checkout/create-checkout-session`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(checkoutSessionRequest),
+      const response = await fetch(
+        `${API_BASE_URL}/api/order/checkout/create-checkout-session`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(checkoutSessionRequest),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Unable to create checkout session");
       }
-    );
 
-    if (!response.ok) {
-      throw new Error("Unable to create checkout session");
+      return response.json();
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+      throw error;
     }
-
-    return response.json();
   };
 
   const {
@@ -82,12 +103,12 @@ export const useCreateCheckoutSession = () => {
     isLoading,
     error,
     reset,
-  } = useMutation(createCheckoutSessionRequest);
-
-  if (error) {
-    toast.error(error.toString());
-    reset();
-  }
+  } = useMutation(createCheckoutSessionRequest, {
+    onError: (error: Error) => {
+      toast.error("Failed to create checkout session. Please try again.");
+      reset();
+    }
+  });
 
   return {
     createCheckoutSession,

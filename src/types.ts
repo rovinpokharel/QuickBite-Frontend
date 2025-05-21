@@ -5,6 +5,8 @@ export type User = {
   addressLine1: string;
   city: string;
   country: string;
+  admin: boolean;
+  restaurantAdmin: boolean;
 };
 
 export type MenuItem = {

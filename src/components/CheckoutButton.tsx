@@ -61,7 +61,7 @@ export default function CheckoutButton({
           currentUser={currentUser}
           onSave={onCheckout}
           isLoading={isGetUserLoading}
-          title="Confirm Deliery Details"
+          title="Confirm Delivery Details"
           buttonText="Continue to payment"
         />
       </DialogContent>
