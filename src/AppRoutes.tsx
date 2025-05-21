@@ -12,6 +12,7 @@ import { useGetMyUser } from "./api/MyUserApi";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 import AdminRestaurantsPage from "./pages/AdminRestaurantsPage";
 import AdminEditRestaurantPage from "./pages/AdminEditRestaurantPage";
+import AdminAddRestaurantPage from "./pages/AdminAddRestaurantPage";
 import RestaurantOrdersPage from "./pages/RestaurantOrdersPage";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -64,55 +65,55 @@ const AppRoutes = () => {
           }
         />
         {/* Restaurant Admin Routes */}
-        {isAuthenticated && currentUser?.restaurantAdmin && (
-          <>
-            <Route
-              path="/restaurant/orders"
-              element={
-                <Layout>
-                  <RestaurantOrdersPage />
-                </Layout>
-              }
-            />
-            <Route
-              path="/manage-restaurant"
-              element={
-                <Layout>
-                  <ManageRestaurantPage />
-                </Layout>
-              }
-            />
-          </>
-        )}
+        <Route
+          path="/restaurant/orders"
+          element={
+            <Layout>
+              <RestaurantOrdersPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/manage-restaurant"
+          element={
+            <Layout>
+              <ManageRestaurantPage />
+            </Layout>
+          }
+        />
         {/* Admin Only Routes */}
-        {isAuthenticated && currentUser?.admin && (
-          <>
-            <Route
-              path="/admin/orders"
-              element={
-                <Layout>
-                  <AdminOrdersPage />
-                </Layout>
-              }
-            />
-            <Route
-              path="/admin/restaurants"
-              element={
-                <Layout>
-                  <AdminRestaurantsPage />
-                </Layout>
-              }
-            />
-            <Route
-              path="/admin/restaurants/:restaurantId/edit"
-              element={
-                <Layout>
-                  <AdminEditRestaurantPage />
-                </Layout>
-              }
-            />
-          </>
-        )}
+        <Route
+          path="/admin/orders"
+          element={
+            <Layout>
+              <AdminOrdersPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/admin/restaurants"
+          element={
+            <Layout>
+              <AdminRestaurantsPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/admin/restaurants/add"
+          element={
+            <Layout>
+              <AdminAddRestaurantPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/admin/restaurants/:restaurantId/edit"
+          element={
+            <Layout>
+              <AdminEditRestaurantPage />
+            </Layout>
+          }
+        />
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />
