@@ -44,6 +44,7 @@ export const useGetMyUser = () => {
 type CreateUserRequest = {
   auth0Id: string;
   email: string;
+  restaurantAdmin?: boolean;
 };
 
 export const useCreateMyUser = () => {

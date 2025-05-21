@@ -15,7 +15,7 @@ type UseGetMyRestaurantOptions = {
   enabled?: boolean;
 };
 
-function useGetMyRestaurant(options: UseGetMyRestaurantOptions = {}) {
+export const useGetMyRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
 
   const getMyRestaurantRequest = async (): Promise<Restaurant> => {
@@ -25,36 +25,34 @@ function useGetMyRestaurant(options: UseGetMyRestaurantOptions = {}) {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
       },
     });
 
     if (!response.ok) {
-      throw new Error("Failed to get restaurant");
+      throw new Error("Failed to fetch restaurant");
     }
+
     return response.json();
   };
 
-  const { data: restaurant, isLoading } = useQuery(
-    QUERY_KEYS.myRestaurant,
-    getMyRestaurantRequest,
-    {
-      enabled: options.enabled,
-      staleTime: 30000,
-      cacheTime: 3600000,
-      retry: false, // Don't retry on failure for restaurant fetch
-    }
-  );
+  const {
+    data: restaurant,
+    isLoading,
+    error,
+  } = useQuery("fetchMyRestaurant", getMyRestaurantRequest);
+
+  if (error) {
+    toast.error(error.toString());
+  }
 
   return { restaurant, isLoading };
-}
+};
 
-function useCreateMyRestaurant() {
+export const useCreateMyRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
-  const queryClient = useQueryClient();
 
-  const createMyRestaurantRequest = async (
-    restaurantFormData: FormData
-  ): Promise<Restaurant> => {
+  const createMyRestaurantRequest = async (restaurantFormData: FormData) => {
     const accessToken = await getAccessTokenSilently();
 
     const response = await fetch(`${API_BASE_URL}/api/my/restaurant`, {
@@ -64,6 +62,7 @@ function useCreateMyRestaurant() {
       },
       body: restaurantFormData,
     });
+
     if (!response.ok) {
       throw new Error("Failed to create restaurant");
     }
@@ -72,31 +71,30 @@ function useCreateMyRestaurant() {
   };
 
   const {
-    mutate: createRestaurant,
+    mutateAsync: createRestaurant,
     isLoading,
+    isError,
     isSuccess,
-    error,
-  } = useMutation(createMyRestaurantRequest, {
-    onSuccess: (data) => {
-      // Update the cache directly instead of refetching
-      queryClient.setQueryData(QUERY_KEYS.myRestaurant, data);
-      toast.success("Restaurant created!");
-    },
-    onError: () => {
-      toast.error("Unable to create restaurant");
-    }
-  });
+  } = useMutation(createMyRestaurantRequest);
 
-  return { createRestaurant, isLoading };
-}
+  if (isSuccess) {
+    toast.success("Restaurant created successfully");
+  }
 
-function useUpdateMyRestaurant() {
+  if (isError) {
+    toast.error("Failed to create restaurant");
+  }
+
+  return {
+    createRestaurant,
+    isLoading,
+  };
+};
+
+export const useUpdateMyRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
-  const queryClient = useQueryClient();
 
-  const updateRestaurantRequest = async (
-    restaurantFormData: FormData
-  ): Promise<Restaurant> => {
+  const updateMyRestaurantRequest = async (restaurantFormData: FormData) => {
     const accessToken = await getAccessTokenSilently();
 
     const response = await fetch(`${API_BASE_URL}/api/my/restaurant`, {
@@ -115,35 +113,38 @@ function useUpdateMyRestaurant() {
   };
 
   const {
-    mutate: updateRestaurant,
+    mutateAsync: updateRestaurant,
     isLoading,
-    error,
+    isError,
     isSuccess,
-  } = useMutation(updateRestaurantRequest, {
-    onSuccess: (data) => {
-      // Update the cache directly instead of refetching
-      queryClient.setQueryData(QUERY_KEYS.myRestaurant, data);
-      toast.success("Restaurant Updated");
-    },
-    onError: () => {
-      toast.error("Unable to update restaurant");
-    }
-  });
+  } = useMutation(updateMyRestaurantRequest);
 
-  return { updateRestaurant, isLoading };
-}
+  if (isSuccess) {
+    toast.success("Restaurant updated successfully");
+  }
+
+  if (isError) {
+    toast.error("Failed to update restaurant");
+  }
+
+  return {
+    updateRestaurant,
+    isLoading,
+  };
+};
 
 type UseGetMyRestaurantOrdersOptions = {
   enabled?: boolean;
 };
 
-function useGetMyRestaurantOrders(options: UseGetMyRestaurantOrdersOptions = {}) {
+export const useGetMyRestaurantOrders = () => {
   const { getAccessTokenSilently } = useAuth0();
 
-  const getMyRestaurantOrdersRequest = async (): Promise<Order[]> => {
+  const getMyRestaurantOrdersRequest = async () => {
     const accessToken = await getAccessTokenSilently();
 
     const response = await fetch(`${API_BASE_URL}/api/my/restaurant/orders`, {
+      method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
@@ -151,37 +152,30 @@ function useGetMyRestaurantOrders(options: UseGetMyRestaurantOrdersOptions = {})
     });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch orders");
+      throw new Error("Failed to fetch restaurant orders");
     }
 
     return response.json();
   };
 
-  const { data: orders, isLoading } = useQuery(
-    QUERY_KEYS.myRestaurantOrders,
-    getMyRestaurantOrdersRequest,
-    {
-      enabled: options.enabled,
-      staleTime: 15000, // Consider data fresh for 15 seconds
-      cacheTime: 60000, // Keep data in cache for 1 minute
-      refetchOnWindowFocus: false, // Don't refetch when window regains focus
-      retry: false // Don't retry on failure
-    }
-  );
+  const {
+    data: orders,
+    isLoading,
+    error,
+  } = useQuery("fetchMyRestaurantOrders", getMyRestaurantOrdersRequest);
+
+  if (error) {
+    toast.error(error.toString());
+  }
 
   return { orders, isLoading };
-}
-
-type UpdateOrderStatusRequest = {
-  orderId: string;
-  status: string;
 };
 
-function useUpdateMyRestaurantOrder() {
+export const useUpdateMyRestaurantOrderStatus = () => {
   const { getAccessTokenSilently } = useAuth0();
   const queryClient = useQueryClient();
 
-  const updateMyRestaurantOrderRequest = async ({
+  const updateMyRestaurantOrderStatusRequest = async ({
     orderId,
     status,
   }: {
@@ -191,7 +185,7 @@ function useUpdateMyRestaurantOrder() {
     const accessToken = await getAccessTokenSilently();
 
     const response = await fetch(
-      `${API_BASE_URL}/api/my/restaurant/order/${orderId}/status`,
+      `${API_BASE_URL}/api/my/restaurant/orders/${orderId}`,
       {
         method: "PATCH",
         headers: {
@@ -203,38 +197,33 @@ function useUpdateMyRestaurantOrder() {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to update status");
+      throw new Error("Failed to update order status");
     }
 
     return response.json();
   };
 
   const {
-    mutateAsync: updateRestaurantStatus,
+    mutateAsync: updateOrderStatus,
     isLoading,
+    isError,
     isSuccess,
-    error,
-  } = useMutation(updateMyRestaurantOrderRequest, {
+  } = useMutation(updateMyRestaurantOrderStatusRequest, {
     onSuccess: () => {
-      queryClient.invalidateQueries(QUERY_KEYS.myRestaurantOrders);
-    },
+      queryClient.invalidateQueries("fetchMyRestaurantOrders");
+    }
   });
 
   if (isSuccess) {
-    toast.success("Order status updated!");
+    toast.success("Order status updated successfully");
   }
 
-  if (error) {
-    toast.error(error.toString());
+  if (isError) {
+    toast.error("Failed to update order status");
   }
 
-  return { updateRestaurantStatus, isLoading };
-}
-
-export {
-  useGetMyRestaurant,
-  useCreateMyRestaurant,
-  useUpdateMyRestaurant,
-  useGetMyRestaurantOrders,
-  useUpdateMyRestaurantOrder,
+  return {
+    updateOrderStatus,
+    isLoading,
+  };
 };

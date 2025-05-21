@@ -47,7 +47,7 @@ export default function AdminRestaurantsPage() {
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
           {restaurants?.length || 0} total restaurants
         </h2>
-        <Link to="/manage-restaurant">
+        <Link to="/admin/restaurants/add">
           <Button className="bg-orange-500 hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-700">
             Add Restaurant
           </Button>
